@@ -1,8 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 export const AppContext = React.createContext();
 
 export const AppProvider = ({ children }) => {
-  return <AppContext.Provider value="hello">{children}</AppContext.Provider>;
+  const [loading, setLoading] = useState(false);
+  const [photos, setPhotos] = useState([]);
+  return (
+    <AppContext.Provider value={{ loading, photos, setPhotos, setLoading }}>
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 // custom hook
