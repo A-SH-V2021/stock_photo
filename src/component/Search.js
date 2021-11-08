@@ -4,17 +4,16 @@ import { useGlobalContext } from "../context/Context";
 import styled from "styled-components";
 
 const Search = () => {
-  const { photos, loading } = useGlobalContext();
-  
+  const { photos, loading, submitHandle } = useGlobalContext();
+
   return (
     <Wrapper>
       <input type="text" />
-      <FcSearch className="btn-search" />
+      <FcSearch className="btn-search" onClick={submitHandle} />
     </Wrapper>
   );
 };
-const Wrapper = styled.div`
-  
+const Wrapper = styled.form`
   display: grid;
   grid-template-columns: 85% auto;
   height: 70%;
@@ -32,6 +31,6 @@ const Wrapper = styled.div`
   }
   @media screen and (min-width: 768px) {
     width: 50%;
-}
+  }
 `;
 export default Search;

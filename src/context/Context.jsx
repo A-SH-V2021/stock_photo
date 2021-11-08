@@ -11,22 +11,28 @@ export const AppProvider = ({ children }) => {
   const fetchData = async (url) => {
     setLoading(true);
     try {
-      const x = await fetch(`${url}${accessKey}`).then((response) =>
-        response.json()
-      );
-      setPhotos(x);
+      const x = await fetch(`${url}${accessKey}`)
+      const data=await x.json()
+      
+     console.log(data);
+      setPhotos(data);
       setLoading(false);
     } catch (error) {
       setLoading(true);
       console.log(error);
     }
   };
+
+  const submitHandle = (e) => {
+    e.preventDefault();
+    console.log(`hello`);
+  };
   useEffect(() => {
     fetchData(mainURL);
   }, []);
 
   return (
-    <AppContext.Provider value={{ loading, photos, setPhotos, setLoading }}>
+    <AppContext.Provider value={{ loading, photos, setPhotos, setLoading,submitHandle }}>
       {children}
     </AppContext.Provider>
   );

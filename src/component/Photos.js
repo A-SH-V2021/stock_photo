@@ -3,18 +3,20 @@ import styled from "styled-components";
 import { useGlobalContext } from "../context/Context";
 import Photo from "./Photo";
 const Photos = () => {
-  const { photos } = useGlobalContext();
-  console.log(photos);
+  const {loading, photos } = useGlobalContext();
+  
   return (
     <Wrapper>
-      <h2>photos</h2>
-      <Photo />
+      {photos.map((image) => {
+        // console.log(item);
+        return <Photo key={image.id} {...image} />;
+      })}      
+      {loading && <h2>loading...</h2> }
     </Wrapper>
   );
 };
-const Wrapper = styled.div`
-  border: 1px solid red;
-
+const Wrapper = styled.section`
   margin-top: 7rem;
+  margin-bottom: 1rem ;
 `;
 export default Photos;
