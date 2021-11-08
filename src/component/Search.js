@@ -5,8 +5,7 @@ import styled from "styled-components";
 
 const Search = () => {
   const { photos, loading } = useGlobalContext();
-  console.log(photos);
-  console.log(loading);
+  
   return (
     <Wrapper>
       <input type="text" />
