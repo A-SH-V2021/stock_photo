@@ -1,14 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 
-const Photo = ({ urls: { regular }, user: { name }, alt_description }) => {
+const Photo = ({
+  urls: { regular },
+  likes,
+  user: {
+    name,
+    portfolio_url,
+    profile_image: { medium },
+  },
+  alt_description,
+}) => {
+  console.log();
   return (
     <Wrapper>
       <div className="card">
-        <img src={regular} alt={name} />
+        <img src={regular} alt={alt_description} />
         <div className="container">
-          <h3>{name}</h3>
-          <p>{alt_description}</p>
+          <div>
+            <h4>{name}</h4>
+            <p>{likes}likes</p>
+          </div>
+          <a href={portfolio_url}>
+            <img src={medium} alt={name} className="user-img" />
+          </a>
         </div>
       </div>
     </Wrapper>
@@ -17,23 +32,46 @@ const Photo = ({ urls: { regular }, user: { name }, alt_description }) => {
 
 const Wrapper = styled.article`
   .card {
+    height: 17.5rem;
+    position: relative;
+    overflow: hidden;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transition: 0.3s;
     width: 90%;
     margin: 2rem auto;
     border-radius: 1rem;
   }
 
-  .card:hover {
+  .card:hove {
     box-shadow: 10px 8px 16px 0 rgba(0, 0, 0, 0.2);
   }
   .card img {
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
   }
 
   .container {
-    padding: 2px 16px;
+    position: absolute;
+    width: 100%;
+    padding: 1rem;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    transform: translateY(100%);
+    transition: var(--transition);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .user-img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+  }
+  .card:hover .container {
+    transform: translateY(0);
   }
 `;
 export default Photo;
