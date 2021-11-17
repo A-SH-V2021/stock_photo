@@ -7,15 +7,17 @@ const accessKey = `?client_id=${process.env.REACT_APP_ACCESS_KEY}`;
 export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [photos, setPhotos] = useState([]);
+  const [page, setPage] = useState(1);
+  const urlPage = `&page=${page}`;
 
   const fetchData = async (url) => {
     setLoading(true);
     try {
-      const x = await fetch(`${url}${accessKey}`);
+      const x = await fetch(`${url}${accessKey}${urlPage}`);
       const data = await x.json();
-
-      console.log(data);
-      setPhotos(data);
+      setPhotos((oldPhoto) => {
+        return [...oldPhoto, ...data];
+      });
       setLoading(false);
     } catch (error) {
       setLoading(true);
@@ -29,12 +31,17 @@ export const AppProvider = ({ children }) => {
   };
   useEffect(() => {
     fetchData(mainURL);
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     const event = window.addEventListener("scroll", () => {
-      if ((window.innerHeight + window.scrollY) > document.body.scrollHeight-2) {
-        
+      if (
+        !loading &&
+        window.innerHeight + window.scrollY > document.body.scrollHeight - 2
+      ) {
+        setPage((prevpage) => {
+          return prevpage + 1;
+        });
       }
     });
     return () => window.removeEventListener("scroll", event);
