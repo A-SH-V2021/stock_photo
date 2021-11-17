@@ -11,10 +11,10 @@ export const AppProvider = ({ children }) => {
   const fetchData = async (url) => {
     setLoading(true);
     try {
-      const x = await fetch(`${url}${accessKey}`)
-      const data=await x.json()
-      
-     console.log(data);
+      const x = await fetch(`${url}${accessKey}`);
+      const data = await x.json();
+
+      console.log(data);
       setPhotos(data);
       setLoading(false);
     } catch (error) {
@@ -31,8 +31,19 @@ export const AppProvider = ({ children }) => {
     fetchData(mainURL);
   }, []);
 
+  useEffect(() => {
+    const event = window.addEventListener("scroll", () => {
+      if ((window.innerHeight + window.scrollY) > document.body.scrollHeight-2) {
+        
+      }
+    });
+    return () => window.removeEventListener("scroll", event);
+  }, []);
+
   return (
-    <AppContext.Provider value={{ loading, photos, setPhotos, setLoading,submitHandle }}>
+    <AppContext.Provider
+      value={{ loading, photos, setPhotos, setLoading, submitHandle }}
+    >
       {children}
     </AppContext.Provider>
   );
