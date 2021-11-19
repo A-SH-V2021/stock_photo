@@ -7,27 +7,28 @@ const accessKey = `?client_id=${process.env.REACT_APP_ACCESS_KEY}`;
 export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [photos, setPhotos] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [query, setQuery] = useState("");
 
   const urlPage = `&page=${page}`;
 
   const fetchData = async () => {
-    let firstUrl = `${mainURL}`;
     let url;
     const urlQuery = `&query=${query}`;
     setLoading(true);
     if (query) {
       url = `${searchURL}${accessKey}${urlPage}${urlQuery}`;
     } else {
-      url = `${firstUrl}${accessKey}${urlPage}`;
+      url = `${mainURL}${accessKey}${urlPage}`;
     }
     try {
       const x = await fetch(url);
       const data = await x.json();
-      console.log(data);
+
       setPhotos((oldPhoto) => {
-        if (query) {
+        if (query && page === 1) {
+          return data.results;
+        } else if (query) {
           return [...oldPhoto, ...data.results];
         } else {
           return [...oldPhoto, ...data];
@@ -42,7 +43,7 @@ export const AppProvider = ({ children }) => {
 
   const submitHandle = (e) => {
     e.preventDefault();
-    fetchData();
+    setPage(1);
   };
   useEffect(() => {
     fetchData();

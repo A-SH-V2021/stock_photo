@@ -4,7 +4,7 @@ import { useGlobalContext } from "../context/Context";
 import styled from "styled-components";
 
 const Search = () => {
-  const {submitHandle, query, setQuery } = useGlobalContext();
+  const { submitHandle, query, setQuery } = useGlobalContext();
 
   return (
     <Wrapper>
@@ -13,7 +13,13 @@ const Search = () => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <FcSearch className="btn-search" onClick={submitHandle} />
+      <button
+        className="btn-btn"
+        type="submit"
+        onClick={(e) => submitHandle(e)}
+      >
+        <FcSearch className="btn-search" />
+      </button>
     </Wrapper>
   );
 };
@@ -31,6 +37,10 @@ const Wrapper = styled.form`
   .btn-search {
     font-size: 2.2rem;
     margin: 0px auto;
+  }
+  .btn-btn {
+    background-color: transparent;
+    border: none;
     cursor: pointer;
   }
   @media screen and (min-width: 768px) {
