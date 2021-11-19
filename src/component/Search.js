@@ -4,11 +4,15 @@ import { useGlobalContext } from "../context/Context";
 import styled from "styled-components";
 
 const Search = () => {
-  const { photos, loading, submitHandle } = useGlobalContext();
+  const {submitHandle, query, setQuery } = useGlobalContext();
 
   return (
     <Wrapper>
-      <input type="text" />
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
       <FcSearch className="btn-search" onClick={submitHandle} />
     </Wrapper>
   );

@@ -8,15 +8,30 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [page, setPage] = useState(1);
+  const [query, setQuery] = useState("");
+
   const urlPage = `&page=${page}`;
 
-  const fetchData = async (url) => {
+  const fetchData = async () => {
+    let firstUrl = `${mainURL}`;
+    let url;
+    const urlQuery = `&query=${query}`;
     setLoading(true);
+    if (query) {
+      url = `${searchURL}${accessKey}${urlPage}${urlQuery}`;
+    } else {
+      url = `${firstUrl}${accessKey}${urlPage}`;
+    }
     try {
-      const x = await fetch(`${url}${accessKey}${urlPage}`);
+      const x = await fetch(url);
       const data = await x.json();
+      console.log(data);
       setPhotos((oldPhoto) => {
-        return [...oldPhoto, ...data];
+        if (query) {
+          return [...oldPhoto, ...data.results];
+        } else {
+          return [...oldPhoto, ...data];
+        }
       });
       setLoading(false);
     } catch (error) {
@@ -27,10 +42,10 @@ export const AppProvider = ({ children }) => {
 
   const submitHandle = (e) => {
     e.preventDefault();
-    console.log(`hello`);
+    fetchData();
   };
   useEffect(() => {
-    fetchData(mainURL);
+    fetchData();
   }, [page]);
 
   useEffect(() => {
@@ -49,7 +64,15 @@ export const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ loading, photos, setPhotos, setLoading, submitHandle }}
+      value={{
+        loading,
+        photos,
+        setPhotos,
+        setLoading,
+        submitHandle,
+        query,
+        setQuery,
+      }}
     >
       {children}
     </AppContext.Provider>
